@@ -1,1 +1,0 @@
-# llum-i-colors-2n-eso-aula-balear
