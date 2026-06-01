@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Llum i els Colors · Física</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f2ec;
+  --bg2:#ffffff;
+  --panel:#ffffff;
+  --panel2:#eceef5;
+  --line:#d3d6e2;
+  --ink:#161929;
+  --muted:#3f445e;
+  --dim:#5a5f7d;
+  --accent:#c43a12;
+  --accent2:#0e6fb0;
+  --display:'Syne',sans-serif;
+  --body:'Hanken Grotesk',sans-serif;
+  --mono:'Space Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(800px 500px at 12% -5%, rgba(220,70,40,.07), transparent 60%),
+    radial-gradient(900px 600px at 88% 8%, rgba(14,111,176,.07), transparent 60%),
+    radial-gradient(700px 700px at 50% 120%, rgba(120,80,255,.06), transparent 60%),
+    var(--bg);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+  background-image:radial-gradient(rgba(0,0,0,.5) 1px, transparent 1px);
+  background-size:3px 3px;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:12px 22px;
+  background:rgba(244,242,236,.82);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+nav .brand{
+  font-family:var(--display);font-weight:800;letter-spacing:-.02em;
+  font-size:1.05rem;margin-right:auto;display:flex;align-items:center;gap:9px;
+}
+nav .brand .dot{width:13px;height:13px;border-radius:50%;
+  background:conic-gradient(red,orange,yellow,lime,cyan,blue,violet,red);
+  box-shadow:0 0 14px rgba(255,255,255,.5);animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+nav a{
+  color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:600;
+  padding:6px 11px;border-radius:8px;transition:.2s;white-space:nowrap;
+}
+nav a:hover{color:var(--ink);background:var(--panel2)}
+
+/* LAYOUT */
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+section{padding:70px 0;border-bottom:1px solid rgba(38,42,71,.5)}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--accent)}
+h1{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.02;
+  font-size:clamp(2.6rem,8vw,5.4rem)}
+h2{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:1.05;
+  font-size:clamp(1.8rem,4.5vw,3rem);margin-bottom:14px}
+h3{font-family:var(--display);font-weight:700;font-size:1.18rem;margin-bottom:8px;letter-spacing:-.01em}
+p{color:var(--muted);max-width:62ch;margin-bottom:14px}
+p strong,.ink{color:var(--ink)}
+.lead{font-size:1.12rem;color:var(--ink);max-width:60ch}
+.mono{font-family:var(--mono)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
+  padding:3px 10px;border:1px solid var(--line);border-radius:99px;color:var(--muted);text-transform:uppercase}
+
+/* HERO */
+.hero{padding:90px 0 80px;position:relative}
+.hero h1 .grad{
+  background:linear-gradient(100deg,#e02020,#e08a00 32%,#1aa64d 55%,#0e7fc4 76%,#7d3bd6);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero .sub{margin-top:22px;font-size:1.18rem;color:var(--ink);max-width:54ch}
+.hero .meta{margin-top:34px;display:flex;gap:10px;flex-wrap:wrap}
+
+/* PANELS / GRID */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{
+  background:var(--bg2);
+  border:1px solid var(--line);border-radius:18px;padding:24px;
+  box-shadow:0 4px 18px rgba(20,23,41,.05);
+}
+.card.soft{background:var(--panel)}
+.demo{
+  background:linear-gradient(180deg,#ffffff,#f3f4f9);
+  border:1px solid var(--line);border-radius:20px;padding:26px;margin-top:24px;
+  position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(20,23,41,.06);
+}
+.demo .lab{position:absolute;top:14px;right:18px;font-family:var(--mono);
+  font-size:.66rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+
+/* CONTROLS */
+.controls{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:18px}
+label.ctl{display:flex;flex-direction:column;gap:6px;font-size:.78rem;color:var(--muted);
+  font-family:var(--mono);letter-spacing:.04em;flex:1;min-width:170px}
+label.ctl .val{color:var(--ink);font-weight:700}
+input[type=range]{-webkit-appearance:none;appearance:none;height:8px;border-radius:99px;
+  background:var(--line);outline:none;cursor:pointer;width:100%}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;
+  border-radius:50%;background:#fff;border:2px solid var(--ink);cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.35)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;
+  border:2px solid var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.btn{font-family:var(--body);font-weight:700;font-size:.85rem;cursor:pointer;
+  border:1px solid var(--line);background:var(--panel2);color:var(--ink);
+  padding:10px 18px;border-radius:10px;transition:.2s}
+.btn:hover{background:#e3e6f0;border-color:#b9bdd0}
+.btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* spectrum bar */
+.specbar{height:30px;border-radius:8px;margin-top:6px;
+  background:linear-gradient(90deg,
+   #6a00b8 0%, #4400ff 8%, #0050ff 18%, #00d4ff 30%,
+   #00ff66 42%, #b6ff00 52%, #ffe600 62%, #ff9000 74%, #ff2a00 86%, #8b0000 100%)}
+
+/* additive / subtractive blobs */
+.mixstage{position:relative;height:300px;border-radius:16px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);overflow:hidden}
+.blob{position:absolute;width:170px;height:170px;border-radius:50%;transition:opacity .35s,transform .35s;filter:blur(.4px)}
+.mixstage.add .blob{mix-blend-mode:screen}
+.mixstage.sub .blob{mix-blend-mode:multiply}
+.mixstage.add{background:#000}
+.mixstage.sub{background:#fff}
+
+/* color temp flame */
+.flamewrap{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.swatch{width:120px;height:120px;border-radius:16px;border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 10px 40px rgba(0,0,0,.5);transition:.2s}
+
+/* palettes */
+.palette{display:flex;border-radius:12px;overflow:hidden;height:64px;margin-top:8px}
+.palette span{flex:1;transition:.2s}
+.palette span:hover{flex:1.6}
+
+/* painting cards */
+.painting{height:150px;border-radius:12px;position:relative;overflow:hidden;border:1px solid var(--line)}
+.painting .cap{position:absolute;bottom:0;left:0;right:0;padding:8px 12px;font-size:.75rem;
+  background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);color:#fff}
+
+/* led scene */
+.scene{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);min-height:280px}
+.sceneOverlay{position:absolute;inset:0;mix-blend-mode:overlay;transition:background .3s,opacity .3s}
+
+/* quiz */
+.quiz .q{margin-bottom:22px}
+.quiz .opts{display:grid;gap:8px;margin-top:10px}
+.quiz .opt{text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+  padding:12px 16px;border-radius:10px;cursor:pointer;font-size:.92rem;transition:.15s}
+.quiz .opt:hover{border-color:#3a3f6b;background:var(--panel2)}
+.quiz .opt.right{background:rgba(92,255,143,.14);border-color:#5cff8f;color:#bfffd4}
+.quiz .opt.wrong{background:rgba(255,77,77,.14);border-color:#ff4d4d;color:#ffc7c7}
+.score{font-family:var(--display);font-weight:800;font-size:1.4rem;margin-top:10px}
+
+footer{padding:40px 0 60px;text-align:center;color:var(--dim);font-size:.85rem}
+.note{font-size:.82rem;color:var(--dim);font-style:italic}
+.kbd{font-family:var(--mono);font-size:.78rem;background:var(--panel2);border:1px solid var(--line);
+  padding:2px 7px;border-radius:6px;color:var(--accent2)}
+
+@media(max-width:760px){
+  .g2,.g3{grid-template-columns:1fr}
+  section{padding:54px 0}
+  nav a{display:none}
+  nav a.show{display:inline}
+}
+.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand"><span class="dot"></span>Llum & Color</span>
+  <a href="#intro">Què és la llum</a>
+  <a href="#prisma">Newton</a>
+  <a href="#ones">Ones</a>
+  <a href="#hsv">To·Sat·Valor</a>
+  <a href="#additiu">Llum (RGB)</a>
+  <a href="#sostractiu">Pigment (CMY)</a>
+  <a href="#kelvin">Kelvin</a>
+  <a href="#temperatura">Freds·Calents</a>
+  <a href="#led">LED vs groga</a>
+  <a href="#quiz" class="show">Test</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero wrap">
+  <div class="eyebrow">Física · 3r d'ESO · Òptica</div>
+  <h1>La <span class="grad">llum</span><br>i els colors</h1>
+  <p class="sub">La llum és energia que viatja en forma d'ona. Quan aprenem a "llegir-la", entenem per què el cel és blau, per què un quadre ens transmet calidesa o fred i per què la mateixa habitació canvia segons la bombeta. Toca, arrossega i experimenta.</p>
+  <div class="meta">
+    <span class="tag">7 demos interactives</span>
+    <span class="tag">Arrossega els controls</span>
+    <span class="tag">Test final</span>
+  </div>
+</header>
+
+<!-- INTRO -->
+<section id="intro" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">01 · Concepte físic</div>
+    <h2>Què és la llum?</h2>
+    <p class="lead">La llum és <strong>radiació electromagnètica</strong>: una pertorbació formada per un camp elèctric i un camp magnètic que es propaguen junts per l'espai, fins i tot pel buit.</p>
+  </div>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card reveal">
+      <h3>És una ona</h3>
+      <p>Es propaga com les onades del mar, però no necessita aigua ni aire. La descrivim amb la <strong>longitud d'ona (λ)</strong> i la <strong>freqüència (f)</strong>.</p>
+    </div>
+    <div class="card reveal">
+      <h3>Velocitat brutal</h3>
+      <p>Al buit viatja a <strong>c ≈ 300.000 km/s</strong>. La llum del Sol triga uns 8 minuts a arribar a la Terra.</p>
+    </div>
+    <div class="card reveal">
+      <h3>Només en veiem una part</h3>
+      <p>L'ull humà només capta la <strong>llum visible</strong>, una finíssima franja de tot l'espectre electromagnètic.</p>
+    </div>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Espectre electromagnètic</span>
+    <h3 style="margin-bottom:14px">On és la llum que veiem?</h3>
+    <svg viewBox="0 0 920 150" style="width:100%;height:auto" aria-label="Espectre electromagnètic">
+      <defs>
+        <linearGradient id="visgrad" x1="0" x2="1">
+          <stop offset="0" stop-color="#7a00cc"/><stop offset=".2" stop-color="#0050ff"/>
+          <stop offset=".4" stop-color="#00ff88"/><stop offset=".6" stop-color="#ffe600"/>
+          <stop offset=".8" stop-color="#ff7a00"/><stop offset="1" stop-color="#ff1a1a"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="60" width="920" height="22" fill="#1a1d35"/>
+      <text x="6" y="52" fill="#3f445e" font-family="Space Mono" font-size="12">Ràdio</text>
+      <text x="150" y="52" fill="#3f445e" font-family="Space Mono" font-size="12">Microones</text>
+      <text x="320" y="52" fill="#3f445e" font-family="Space Mono" font-size="12">Infraroig</text>
+      <text x="700" y="52" fill="#3f445e" font-family="Space Mono" font-size="12">Ultraviolat</text>
+      <text x="800" y="52" fill="#3f445e" font-family="Space Mono" font-size="12">Raigs X · γ</text>
+      <rect x="470" y="44" width="200" height="54" rx="6" fill="url(#visgrad)"/>
+      <text x="500" y="122" fill="#161929" font-family="Space Mono" font-size="13" font-weight="700">VISIBLE</text>
+      <text x="470" y="138" fill="#5a5f7d" font-family="Space Mono" font-size="11">380 nm</text>
+      <text x="620" y="138" fill="#5a5f7d" font-family="Space Mono" font-size="11">750 nm</text>
+      <line x1="0" y1="71" x2="920" y2="71" stroke="#2a2e4d" stroke-width="1"/>
+    </svg>
+    <p style="margin-top:8px;margin-bottom:0">A l'esquerra, ones llargues i poc energètiques (ràdio). A la dreta, ones curtes i molt energètiques (raigs X i gamma). La <strong>llum visible</strong> és aquesta petita franja de colors enmig.</p>
+  </div>
+</section>
+
+<!-- NEWTON / PRISMA -->
+<section id="prisma" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">02 · Newton i el prisma</div>
+    <h2>La llum blanca són TOTS els colors</h2>
+    <p class="lead">El 1666, <strong>Isaac Newton</strong> va fer passar un raig de llum solar (blanca) per un <strong>prisma</strong> de vidre. La llum es va descompondre en una franja de colors: l'<strong>espectre</strong>. Va demostrar que la llum blanca no és "incolora", sinó la barreja de totes les longituds d'ona.</p>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Dispersió de la llum</span>
+    <h3 style="margin-bottom:6px">Prisma de Newton</h3>
+    <p style="margin-bottom:10px">El prisma desvia (refracta) cada color un angle diferent: el <strong>violeta</strong> es desvia més i el <strong>vermell</strong> menys. Per això surten separats.</p>
+    <svg id="prismSvg" viewBox="0 0 920 320" style="width:100%;height:auto;background:#05060d;border-radius:14px">
+      <defs>
+        <linearGradient id="rb" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff1a1a"/><stop offset=".18" stop-color="#ff8a00"/>
+          <stop offset=".34" stop-color="#ffe600"/><stop offset=".5" stop-color="#22ff66"/>
+          <stop offset=".66" stop-color="#00d4ff"/><stop offset=".82" stop-color="#2a4dff"/>
+          <stop offset="1" stop-color="#9b00ff"/>
+        </linearGradient>
+      </defs>
+      <!-- incoming white beam -->
+      <rect id="beam" x="0" y="150" width="0" height="10" fill="#fff" filter="drop-shadow(0 0 6px #fff)"/>
+      <text x="40" y="140" fill="#cfd2ee" font-family="Space Mono" font-size="13">llum blanca</text>
+      <!-- prism -->
+      <polygon points="430,90 490,230 370,230" fill="rgba(180,200,255,.10)" stroke="rgba(180,200,255,.55)" stroke-width="2"/>
+      <!-- dispersed fan -->
+      <g id="fan" opacity="0">
+        <polygon points="488,160 900,70 900,250 488,196" fill="url(#rb)" opacity=".92"/>
+      </g>
+      <text x="690" y="285" fill="#cfd2ee" font-family="Space Mono" font-size="13" text-anchor="middle">espectre visible</text>
+      <text x="395" y="255" fill="#9aa0c4" font-family="Space Mono" font-size="12" text-anchor="middle">prisma</text>
+    </svg>
+    <div class="controls">
+      <button class="btn" id="prismBtn">▶ Encén el raig de llum</button>
+      <span class="note">Vermell · Taronja · Groc · Verd · Blau · Indi · Violeta — l'arc de Sant Martí en ordre.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ONES -->
+<section id="ones" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">03 · Ones de llum</div>
+    <h2>Cada color és una longitud d'ona</h2>
+    <p class="lead">El <strong>color</strong> que percebem depèn de la <strong>longitud d'ona (λ)</strong> de la llum, mesurada en nanòmetres (nm). Ones llargues = vermell; ones curtes = violeta. Arrossega i mira com canvia.</p>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Longitud d'ona → color</span>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+      <div id="waveSwatch" style="width:130px;height:130px;border-radius:16px;background:#22ff66;box-shadow:0 0 40px rgba(34,255,102,.4);transition:.15s;flex-shrink:0"></div>
+      <div style="flex:1;min-width:240px">
+        <svg viewBox="0 0 400 70" style="width:100%;height:60px">
+          <path id="wavePath" d="" stroke="#fff" stroke-width="3" fill="none"/>
+        </svg>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:6px">
+          <div><div class="note">Longitud d'ona</div><div class="mono" style="font-size:1.5rem;font-weight:700;color:var(--ink)" id="wlOut">532 nm</div></div>
+          <div><div class="note">Freqüència</div><div class="mono" style="font-size:1.5rem;font-weight:700;color:var(--ink)" id="freqOut">564 THz</div></div>
+          <div><div class="note">Color percebut</div><div class="mono" style="font-size:1.5rem;font-weight:700;color:var(--ink)" id="colName">Verd</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="specbar"></div>
+    <input type="range" id="wlRange" min="380" max="750" value="532" style="margin-top:14px">
+    <div style="display:flex;justify-content:space-between" class="note mono"><span>380 nm · violeta</span><span>750 nm · vermell</span></div>
+  </div>
+</section>
+
+<!-- HSV -->
+<section id="hsv" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">04 · Descrivim un color</div>
+    <h2>To, Saturació i Valor</h2>
+    <p class="lead">Qualsevol color es pot descriure amb tres propietats. És la manera que fan servir artistes, dissenyadors i pantalles per definir colors de forma precisa.</p>
+  </div>
+  <div class="grid g3" style="margin-top:22px">
+    <div class="card reveal"><h3 style="color:#ff7ad9">To <span class="note">(matís)</span></h3><p style="margin:0">És el "nom" del color: vermell, groc, blau... Es mesura en graus (0°–360°) en una <strong>roda de colors</strong>.</p></div>
+    <div class="card reveal"><h3 style="color:#7affd1">Saturació</h3><p style="margin:0">La <strong>puresa</strong> o intensitat del color. Saturació alta = color viu. Saturació baixa = apagat, grisós.</p></div>
+    <div class="card reveal"><h3 style="color:#ffe07a">Valor <span class="note">(lluminositat)</span></h3><p style="margin:0">Com de <strong>clar o fosc</strong> és. Valor alt = brillant. Valor baix = tendeix al negre.</p></div>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Model HSV</span>
+    <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:center">
+      <div id="hsvSwatch" style="width:150px;height:150px;border-radius:20px;border:1px solid rgba(255,255,255,.15);flex-shrink:0;transition:.05s"></div>
+      <div style="flex:1;min-width:260px">
+        <label class="ctl">To (Hue) · <span class="val" id="hOut">200°</span>
+          <input type="range" id="hR" min="0" max="360" value="200"></label>
+        <label class="ctl" style="margin-top:14px">Saturació · <span class="val" id="sOut">80%</span>
+          <input type="range" id="sR" min="0" max="100" value="80"></label>
+        <label class="ctl" style="margin-top:14px">Valor · <span class="val" id="vOut">90%</span>
+          <input type="range" id="vR" min="0" max="100" value="90"></label>
+        <div class="mono" style="margin-top:14px;color:var(--ink);font-weight:700" id="hexOut">#2ec7e6</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADDITIU -->
+<section id="additiu" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">05 · Colors primaris de la LLUM</div>
+    <h2>Barreja additiva (RGB)</h2>
+    <p class="lead">Els colors primaris de la <strong>llum</strong> són el <strong style="color:#ff4d4d">vermell</strong>, el <strong style="color:#4dff4d">verd</strong> i el <strong style="color:#4d8aff">blau</strong> (RGB). Quan sumes llums, el resultat és més clar: <strong>com més colors de llum sumes, més et acostes al blanc.</strong> Així funcionen pantalles, mòbils i televisors.</p>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Síntesi additiva</span>
+    <div class="mixstage add" id="addStage">
+      <div class="blob" id="addR" style="background:#ff2a2a;transform:translate(-58px,-34px)"></div>
+      <div class="blob" id="addG" style="background:#22dd22;transform:translate(58px,-34px)"></div>
+      <div class="blob" id="addB" style="background:#2a6aff;transform:translate(0,52px)"></div>
+    </div>
+    <div class="controls">
+      <button class="btn active" data-add="addR">🔴 Vermell</button>
+      <button class="btn active" data-add="addG">🟢 Verd</button>
+      <button class="btn active" data-add="addB">🔵 Blau</button>
+      <span class="note">Vermell + Verd = Groc · Verd + Blau = Cian · Vermell + Blau = Magenta · <strong>els tres = Blanc</strong></span>
+    </div>
+  </div>
+</section>
+
+<!-- SOSTRACTIU -->
+<section id="sostractiu" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">06 · Colors primaris dels PIGMENTS</div>
+    <h2>Barreja sostractiva (CMY)</h2>
+    <p class="lead">Els pigments (pintures, tintes) no emeten llum: l'<strong>absorbeixen</strong>. Cada pigment resta colors de la llum blanca i només reflecteix la resta. Els primaris són <strong style="color:#00b8c4">cian</strong>, <strong style="color:#d63bb0">magenta</strong> i <strong style="color:#d6c000">groc</strong>. Aquí passa el contrari que amb la llum: <strong>com més pigments barreges, més fosc surt</strong>, fins arribar gairebé al negre.</p>
+    <p class="note">A classe de plàstica solem fer servir vermell-groc-blau (RYB), un model més antic i aproximat. El model correcte de la física i la impressió és CMY.</p>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Síntesi sostractiva</span>
+    <div class="mixstage sub" id="subStage">
+      <div class="blob" id="subC" style="background:#00b8d4;transform:translate(-58px,-34px)"></div>
+      <div class="blob" id="subM" style="background:#e3009a;transform:translate(58px,-34px)"></div>
+      <div class="blob" id="subY" style="background:#ffe000;transform:translate(0,52px)"></div>
+    </div>
+    <div class="controls">
+      <button class="btn active" data-sub="subC" style="color:#0a0b15;background:#00b8d4;border-color:#00b8d4">Cian</button>
+      <button class="btn active" data-sub="subM" style="color:#fff;background:#e3009a;border-color:#e3009a">Magenta</button>
+      <button class="btn active" data-sub="subY" style="color:#0a0b15;background:#ffe000;border-color:#ffe000">Groc</button>
+      <span class="note">Cian + Groc = Verd · Magenta + Groc = Vermell · <strong>els tres = Negre</strong></span>
+    </div>
+  </div>
+  <div class="grid g2 reveal" style="margin-top:18px">
+    <div class="card" style="background:#000;border-color:#333"><h3 style="color:#fff">☀️ Llum = additiva</h3><p style="margin:0;color:#cfd2ee">Parteix del <strong style="color:#fff">negre</strong> (sense llum) i, sumant llums, arribes al <strong style="color:#fff">blanc</strong>.</p></div>
+    <div class="card" style="background:#fff;border-color:#ccc"><h3 style="color:#111">🎨 Pigment = sostractiva</h3><p style="margin:0;color:#444">Parteix del <strong style="color:#111">blanc</strong> (paper) i, afegint pigments, arribes al <strong style="color:#111">negre</strong>.</p></div>
+  </div>
+</section>
+
+<!-- KELVIN -->
+<section id="kelvin" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">07 · Temperatura de color</div>
+    <h2>Color i temperatura: els Kelvin</h2>
+    <p class="lead">Quan un cos s'escalfa molt, emet llum, i el color d'aquesta llum depèn de la seva <strong>temperatura</strong>, mesurada en <strong>kelvin (K)</strong>. Curiosament, com més calent, més blau (no més vermell!).</p>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">El mexer Bunsen</span>
+    <div class="grid g2" style="align-items:center">
+      <div>
+        <h3>La flama del mexer Bunsen</h3>
+        <p>Al laboratori ho veiem clar: si tanquem l'entrada d'aire, la combustió és incompleta i la flama és <strong>groga i "freda"</strong> (uns 1.000 K). Si obrim l'aire, la combustió és completa i la flama es torna <strong>blava i molt més calenta</strong> (fins ~1.500 K i més). <strong>Més blau = més energia.</strong></p>
+        <p class="note">Mou el control i observa com canvia la flama i el color de la llum.</p>
+      </div>
+      <svg id="bunsenSvg" viewBox="0 0 200 260" style="width:100%;max-width:240px;margin:0 auto;display:block">
+        <defs>
+          <radialGradient id="flameGrad" cx="50%" cy="75%" r="65%">
+            <stop offset="0" stop-color="#fff8e1"/><stop offset="1" id="flameStop" stop-color="#ff8a00"/>
+          </radialGradient>
+        </defs>
+        <path id="flame" d="M100 60 C 70 110, 78 160, 100 180 C 122 160, 130 110, 100 60 Z" fill="url(#flameGrad)" opacity=".95"/>
+        <rect x="90" y="178" width="20" height="60" fill="#3a3f5c"/>
+        <rect x="70" y="236" width="60" height="14" rx="3" fill="#2a2e44"/>
+        <text x="100" y="255" fill="#3f445e" font-family="Space Mono" font-size="11" text-anchor="middle">mexer Bunsen</text>
+      </svg>
+    </div>
+    <div class="flamewrap">
+      <div class="swatch" id="kSwatch"></div>
+      <div style="flex:1;min-width:240px">
+        <label class="ctl">Temperatura · <span class="val mono" id="kOut">1500 K</span>
+          <input type="range" id="kR" min="1000" max="12000" step="100" value="1500"></label>
+        <div class="palette" style="margin-top:14px">
+          <span style="background:#ff7b1a" title="Espelma ~1900K"></span>
+          <span style="background:#ffb04d" title="Bombeta ~2700K"></span>
+          <span style="background:#fff3e0" title="Llum càlida ~3500K"></span>
+          <span style="background:#fff" title="Llum dia ~5500K"></span>
+          <span style="background:#cfe0ff" title="Núvol ~7000K"></span>
+          <span style="background:#9fc0ff" title="Cel blau ~10000K"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between" class="note mono"><span>càlid · 🔥 groc-vermell</span><span>fred · ❄️ blanc-blau</span></div>
+        <div class="mono" style="margin-top:8px;color:var(--ink);font-weight:700" id="kLabel">Flama groga / espelma</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREDS I CALENTS -->
+<section id="temperatura" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">08 · Sensació</div>
+    <h2>Colors freds i colors calents</h2>
+    <p class="lead">A part de la física, els colors ens transmeten sensacions. Els <strong style="color:#ff9a4d">càlids</strong> (vermells, taronges, grocs) recorden el foc i el sol. Els <strong style="color:#6cc7ff">freds</strong> (blaus, verds, violetes) recorden l'aigua, el gel i l'ombra.</p>
+  </div>
+  <div class="grid g2" style="margin-top:22px">
+    <div class="card reveal">
+      <h3 style="color:#ff9a4d">🔥 Paleta càlida (pigments)</h3>
+      <div class="palette"><span style="background:#7a1500"></span><span style="background:#c42b00"></span><span style="background:#ff4d00"></span><span style="background:#ff8a00"></span><span style="background:#ffc400"></span><span style="background:#ffe680"></span></div>
+      <p style="margin-top:12px;margin-bottom:0">Avancen, donen energia i calidesa. Semblen apropar-se a l'espectador.</p>
+    </div>
+    <div class="card reveal">
+      <h3 style="color:#6cc7ff">❄️ Paleta freda (pigments)</h3>
+      <div class="palette"><span style="background:#06203a"></span><span style="background:#0b4f8a"></span><span style="background:#1f8ad6"></span><span style="background:#2ad0e6"></span><span style="background:#33d6a6"></span><span style="background:#9be8d0"></span></div>
+      <p style="margin-top:12px;margin-bottom:0">Reculen, calmen i donen sensació de distància i tranquil·litat.</p>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:28px">
+    <h3 style="margin-bottom:14px">Quadres dominats per colors freds o càlids</h3>
+    <div class="grid g3">
+      <div>
+        <div class="painting" style="background:radial-gradient(circle at 70% 30%,#ffd86b,#ff8a00 40%,#c42b00 75%,#5a0e00)"><div class="cap">Dominant càlida — paisatge de capvespre (estil Van Gogh, <em>Camp de blat</em>)</div></div>
+      </div>
+      <div>
+        <div class="painting" style="background:linear-gradient(160deg,#06203a,#0b4f8a 45%,#1f8ad6 80%,#9be8d0)"><div class="cap">Dominant freda — nocturn marí (estil Monet, <em>Impressió</em>)</div></div>
+      </div>
+      <div>
+        <div class="painting" style="background:conic-gradient(from 200deg,#ff8a00,#ffd86b,#2ad0e6,#0b4f8a,#ff4d00)"><div class="cap">Contrast càlid-fred — el recurs preferit dels pintors</div></div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:12px">Representacions abstractes amb gradients per il·lustrar les dominants cromàtiques (no són les obres originals).</p>
+  </div>
+  <div class="card reveal" style="margin-top:24px">
+    <h3>I amb la llum?</h3>
+    <p style="margin-bottom:0">Atenció a la "trampa": en <strong>sensació</strong>, el vermell és càlid i el blau és fred. Però en <strong>física (Kelvin)</strong> és just al revés: la llum blava és la més calenta i la groga-vermella, la més freda. Per això una bombeta de "llum càlida" té pocs kelvin!</p>
+  </div>
+</section>
+
+<!-- LED VS GROGA -->
+<section id="led" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">09 · A la vida real</div>
+    <h2>Llum LED freda vs llum groga càlida</h2>
+    <p class="lead">La mateixa habitació canvia totalment segons la bombeta. La <strong>llum groga càlida</strong> (~2700 K, com les antigues incandescents) crea ambient acollidor. La <strong>llum LED freda</strong> (~6500 K, blanca-blavosa) il·lumina molt i s'usa en cuines, hospitals i oficines.</p>
+  </div>
+  <div class="demo reveal">
+    <span class="lab">Comparador d'il·luminació</span>
+    <div class="scene" id="scene">
+      <svg viewBox="0 0 600 280" style="width:100%;display:block">
+        <rect x="0" y="0" width="600" height="200" fill="#caa57a"/>
+        <rect x="0" y="200" width="600" height="80" fill="#8a6a44"/>
+        <!-- finestra -->
+        <rect x="60" y="40" width="120" height="110" fill="#bcd7e6" stroke="#6b5436" stroke-width="6"/>
+        <line x1="120" y1="40" x2="120" y2="150" stroke="#6b5436" stroke-width="4"/>
+        <line x1="60" y1="95" x2="180" y2="95" stroke="#6b5436" stroke-width="4"/>
+        <!-- quadre -->
+        <rect x="380" y="55" width="120" height="90" fill="#e8d6b0" stroke="#5a4530" stroke-width="6"/>
+        <circle cx="430" cy="100" r="22" fill="#ff8a3d"/><rect x="400" y="115" width="80" height="20" fill="#3aa0c4"/>
+        <!-- taula -->
+        <rect x="220" y="150" width="180" height="20" rx="4" fill="#9a7650"/>
+        <rect x="240" y="170" width="14" height="40" fill="#7a5c3c"/><rect x="366" y="170" width="14" height="40" fill="#7a5c3c"/>
+        <!-- gerro i planta -->
+        <ellipse cx="300" cy="150" rx="22" ry="10" fill="#c44a2a"/>
+        <path d="M300 150 C280 110,270 95,290 80 M300 150 C320 110,330 100,312 82 M300 150 C300 110,300 95,300 78" stroke="#3a8a3a" stroke-width="6" fill="none"/>
+        <!-- llum -->
+        <circle cx="300" cy="22" r="14" fill="#fff6d6"/>
+        <line x1="300" y1="0" x2="300" y2="10" stroke="#444" stroke-width="3"/>
+      </svg>
+      <div class="sceneOverlay" id="sceneOverlay"></div>
+    </div>
+    <div class="controls">
+      <button class="btn" id="ledWarm">💡 Llum groga càlida (2700 K)</button>
+      <button class="btn active" id="ledCool">🔆 Llum LED freda (6500 K)</button>
+      <span class="note">Fixa't com la sensació de l'habitació canvia sense canviar res més.</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">10 · Comprova què has après</div>
+    <h2>Mini-test</h2>
+  </div>
+  <div class="card quiz reveal" id="quizBox" style="margin-top:20px"></div>
+</section>
+
+<footer class="wrap">
+  La Llum i els Colors · Recurs interactiu de Física · Fet amb HTML, CSS i JavaScript
+</footer>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+$$('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- PRISMA ---------- */
+const beam=$('#beam'), fan=$('#fan'), prismBtn=$('#prismBtn');
+let prismOn=false;
+function playPrism(){
+  beam.setAttribute('width','0'); fan.setAttribute('opacity','0');
+  let w=0; const t=setInterval(()=>{w+=14; beam.setAttribute('width',Math.min(w,430));
+    if(w>=430){clearInterval(t); fan.style.transition='opacity .8s'; fan.setAttribute('opacity','1');}},16);
+}
+prismBtn.addEventListener('click',()=>{playPrism();});
+// autoplay quan entra en pantalla
+new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){playPrism();o.disconnect();}},{threshold:.4}).observe($('#prismSvg'));
+
+/* ---------- WAVELENGTH → RGB (Dan Bruton) ---------- */
+function wavelengthToRGB(wl){
+  let r,g,b,a=1;
+  if(wl<380){wl=380} if(wl>750){wl=750}
+  if(wl<440){r=-(wl-440)/(440-380);g=0;b=1;}
+  else if(wl<490){r=0;g=(wl-440)/(490-440);b=1;}
+  else if(wl<510){r=0;g=1;b=-(wl-510)/(510-490);}
+  else if(wl<580){r=(wl-510)/(580-510);g=1;b=0;}
+  else if(wl<645){r=1;g=-(wl-645)/(645-580);b=0;}
+  else{r=1;g=0;b=0;}
+  if(wl<420)a=.3+.7*(wl-380)/(420-380);
+  else if(wl>700)a=.3+.7*(750-wl)/(750-700);
+  const f=c=>Math.round(255*Math.pow(c*a,.8));
+  return [f(r),f(g),f(b)];
+}
+function colorName(wl){
+  if(wl<450)return'Violeta'; if(wl<485)return'Blau'; if(wl<500)return'Cian';
+  if(wl<565)return'Verd'; if(wl<590)return'Groc'; if(wl<625)return'Taronja'; return'Vermell';
+}
+const wlRange=$('#wlRange'),waveSwatch=$('#waveSwatch'),wlOut=$('#wlOut'),
+      freqOut=$('#freqOut'),colName=$('#colName'),wavePath=$('#wavePath');
+function updWave(){
+  const wl=+wlRange.value, [r,g,b]=wavelengthToRGB(wl), col=`rgb(${r},${g},${b})`;
+  waveSwatch.style.background=col; waveSwatch.style.boxShadow=`0 0 50px ${col}`;
+  wlOut.textContent=wl+' nm';
+  freqOut.textContent=Math.round(299792458/(wl*1e-9)/1e12)+' THz';
+  colName.textContent=colorName(wl);
+  // ona sinusoïdal: longitud d'ona curta -> més cicles
+  const cycles=2+ (750-wl)/55; let d='M0 35';
+  for(let x=0;x<=400;x+=4){d+=` L${x} ${35-22*Math.sin(x/400*cycles*2*Math.PI)}`;}
+  wavePath.setAttribute('d',d); wavePath.setAttribute('stroke',col);
+}
+wlRange.addEventListener('input',updWave); updWave();
+
+/* ---------- HSV ---------- */
+function hsv2rgb(h,s,v){
+  s/=100;v/=100; const c=v*s,x=c*(1-Math.abs((h/60)%2-1)),m=v-c; let r,g,b;
+  if(h<60)[r,g,b]=[c,x,0];else if(h<120)[r,g,b]=[x,c,0];else if(h<180)[r,g,b]=[0,c,x];
+  else if(h<240)[r,g,b]=[0,x,c];else if(h<300)[r,g,b]=[x,0,c];else[r,g,b]=[c,0,x];
+  return [Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)];
+}
+const hR=$('#hR'),sR=$('#sR'),vR=$('#vR');
+function updHSV(){
+  const h=+hR.value,s=+sR.value,v=+vR.value,[r,g,b]=hsv2rgb(h,s,v);
+  const hex='#'+[r,g,b].map(n=>n.toString(16).padStart(2,'0')).join('');
+  $('#hsvSwatch').style.background=`rgb(${r},${g},${b})`;
+  $('#hOut').textContent=h+'°';$('#sOut').textContent=s+'%';$('#vOut').textContent=v+'%';
+  $('#hexOut').textContent=hex.toUpperCase();
+  // colorejar el thumb del to
+  hR.style.background=`linear-gradient(90deg,red,#ff0,#0f0,#0ff,#00f,#f0f,red)`;
+}
+[hR,sR,vR].forEach(el=>el.addEventListener('input',updHSV)); updHSV();
+
+/* ---------- ADDITIU & SOSTRACTIU toggles ---------- */
+$$('[data-add]').forEach(btn=>btn.addEventListener('click',()=>{
+  const el=$('#'+btn.dataset.add); const on=btn.classList.toggle('active');
+  el.style.opacity=on?'1':'0';
+}));
+$$('[data-sub]').forEach(btn=>btn.addEventListener('click',()=>{
+  const el=$('#'+btn.dataset.sub); const on=btn.classList.toggle('active');
+  el.style.opacity=on?'1':'0';
+}));
+
+/* ---------- KELVIN → RGB (Tanner Helland approx) ---------- */
+function kelvin2rgb(k){
+  const t=k/100; let r,g,b;
+  if(t<=66){r=255;}else{r=329.7*Math.pow(t-60,-0.1332);}
+  if(t<=66){g=99.47*Math.log(t)-161.12;}else{g=288.12*Math.pow(t-60,-0.0755);}
+  if(t>=66){b=255;}else if(t<=19){b=0;}else{b=138.52*Math.log(t-10)-305.04;}
+  const cl=v=>Math.max(0,Math.min(255,Math.round(v)));
+  return [cl(r),cl(g),cl(b)];
+}
+const kR=$('#kR'),kSwatch=$('#kSwatch'),kOut=$('#kOut'),kLabel=$('#kLabel'),
+      flame=$('#flame'),flameStop=$('#flameStop');
+function kName(k){
+  if(k<1500)return'Flama groga / espelma 🕯️';
+  if(k<2200)return'Espelma · sol baix 🌅';
+  if(k<3200)return'Bombeta incandescent 💡';
+  if(k<4500)return'Llum càlida / matí';
+  if(k<6000)return'Llum de dia ☀️';
+  if(k<8000)return'Cel ennuvolat / ombra';
+  return'Cel blau clar / flama Bunsen blava 🔵';
+}
+function updK(){
+  const k=+kR.value,[r,g,b]=kelvin2rgb(k),col=`rgb(${r},${g},${b})`;
+  kSwatch.style.background=col; kSwatch.style.boxShadow=`0 0 50px ${col}`;
+  kOut.textContent=k+' K'; kLabel.textContent=kName(k);
+  // la flama: més K -> més blava i més estreta/alta
+  flameStop.setAttribute('stop-color',col);
+  const tall=k>4000; 
+  flame.setAttribute('d', tall
+    ? 'M100 40 C 82 100, 86 165, 100 185 C 114 165, 118 100, 100 40 Z'
+    : 'M100 70 C 66 115, 76 165, 100 182 C 124 165, 134 115, 100 70 Z');
+}
+kR.addEventListener('input',updK); updK();
+
+/* ---------- LED scene ---------- */
+const overlay=$('#sceneOverlay'),warmBtn=$('#ledWarm'),coolBtn=$('#ledCool');
+function setLight(mode){
+  if(mode==='warm'){
+    overlay.style.background='rgba(255,160,40,.55)'; overlay.style.opacity='1';
+    warmBtn.classList.add('active'); coolBtn.classList.remove('active');
+  }else{
+    overlay.style.background='rgba(150,190,255,.45)'; overlay.style.opacity='1';
+    coolBtn.classList.add('active'); warmBtn.classList.remove('active');
+  }
+}
+warmBtn.addEventListener('click',()=>setLight('warm'));
+coolBtn.addEventListener('click',()=>setLight('cool'));
+setLight('cool');
+
+/* ---------- QUIZ ---------- */
+const quiz=[
+ {q:'Quan la llum blanca travessa un prisma...',
+  o:['Es perd i desapareix','Es descompon en tots els colors de l\'espectre','Es torna negra'],a:1},
+ {q:'Quins són els colors primaris de la LLUM (additius)?',
+  o:['Vermell, groc i blau','Cian, magenta i groc','Vermell, verd i blau (RGB)'],a:2},
+ {q:'Si barreges molts pigments diferents, el resultat tendeix a...',
+  o:['El blanc','El negre / fosc','El groc'],a:1},
+ {q:'Una llum amb MOLTS kelvin (p. ex. 8000 K) la veiem...',
+  o:['Groga i càlida','Blanca-blavosa i freda','Vermella'],a:1},
+ {q:'La longitud d\'ona del color VERMELL respecte al violeta és...',
+  o:['Més llarga','Més curta','Igual'],a:0},
+];
+let score=0,answered=0;
+const box=$('#quizBox');
+quiz.forEach((item,i)=>{
+  const d=document.createElement('div'); d.className='q';
+  d.innerHTML=`<h3>${i+1}. ${item.q}</h3><div class="opts"></div>`;
+  const opts=d.querySelector('.opts');
+  item.o.forEach((txt,j)=>{
+    const b=document.createElement('button'); b.className='opt'; b.textContent=txt;
+    b.addEventListener('click',()=>{
+      if(d.dataset.done)return; d.dataset.done='1'; answered++;
+      [...opts.children].forEach((c,k)=>{
+        if(k===item.a)c.classList.add('right');
+        else if(c===b)c.classList.add('wrong');
+        c.style.pointerEvents='none';
+      });
+      if(j===item.a)score++;
+      if(answered===quiz.length){
+        const r=document.createElement('div'); r.className='score';
+        r.textContent=`Puntuació: ${score} / ${quiz.length} `+(score>=4?'🎉 Crack de l\'òptica!':score>=3?'👍 Molt bé!':'💪 Repassa i torna-ho a provar');
+        box.appendChild(r);
+      }
+    });
+    opts.appendChild(b);
+  });
+  box.appendChild(d);
+});
+</script>
+</body>
+</html>
